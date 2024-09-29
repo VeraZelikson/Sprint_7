@@ -1,4 +1,5 @@
-from helpers.faker import Faker
+from helpers.fakedata import FakeData
+import random
 
 
 class PayloadBuilder:
@@ -6,11 +7,11 @@ class PayloadBuilder:
     def make_courier_create_payload(with_login=True, with_password=True, with_first_name=True):
         payload = {}
         if with_login:
-            payload["login"] = Faker.generate_random_string(10)
+            payload["login"] = FakeData.generate_random_string(10)
         if with_password:
-            payload["password"] = Faker.generate_random_string(10)
+            payload["password"] = FakeData.generate_random_string(10)
         if with_first_name:
-            payload["firstName"] = Faker.generate_random_string(10)
+            payload["firstName"] = FakeData.generate_random_string(10)
         return payload
 
     @staticmethod
@@ -20,4 +21,19 @@ class PayloadBuilder:
             payload["login"] = login
         if password is not None:
             payload["password"] = password
+        return payload
+
+    @staticmethod
+    def make_order_payload(scooter_colors):
+        payload = {
+            "firstName": FakeData.generate_random_string(10),
+            "lastName": FakeData.generate_random_string(10),
+            "address": FakeData.generate_random_string(10),
+            "metroStation": random.randint(1, 268),
+            "phone": FakeData.generate_random_phone(),
+            "rentTime": random.randint(1, 12),
+            "deliveryDate": FakeData.generate_random_date(),
+            "comment": FakeData.generate_random_string(10),
+            "color": scooter_colors
+        }
         return payload

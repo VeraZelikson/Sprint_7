@@ -12,3 +12,7 @@ class ApiService:
     @staticmethod
     def login_courier(payload):
         return requests.post(url=Urls.COURIER_LOGIN_URL, data=payload)
+
+    @staticmethod
+    def create_order(payload):
+        return requests.post(url=Urls.CREATE_ORDER_URL, data=payload)
