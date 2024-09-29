@@ -16,3 +16,7 @@ class ApiService:
     @staticmethod
     def create_order(payload):
         return requests.post(url=Urls.CREATE_ORDER_URL, data=payload)
+
+    @staticmethod
+    def order_list(query):
+        return requests.get(url=Urls.ORDER_LIST_URL, params=query)

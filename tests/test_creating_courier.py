@@ -4,7 +4,6 @@ import allure
 from helpers.api_service import ApiService
 from helpers.expexted_responses import ExpectedResponses
 from helpers.payload_builder import PayloadBuilder
-from helpers.urls import Urls
 
 
 class TestCreatingCourier:
