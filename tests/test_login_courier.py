@@ -1,10 +1,9 @@
 import pytest
 import allure
-import requests
 
+from helpers.api_service import ApiService
 from helpers.expexted_responses import ExpectedResponses
 from helpers.payload_builder import PayloadBuilder
-from helpers.urls import Urls
 
 
 class TestLoginCourier:
@@ -12,9 +11,9 @@ class TestLoginCourier:
     @allure.title('Успешный логин курьера')
     def test_login_courier_successfully(self):
         payload = PayloadBuilder.make_courier_create_payload()
-        response = requests.post(url=Urls.COURIER_CREATING_URL, data=payload)
+        response = ApiService.create_courier(payload)
         assert response.status_code == 201
-        response = requests.post(url=Urls.COURIER_LOGIN_URL, data=payload)
+        response = ApiService.login_courier(payload)
         assert response.status_code == 200 and response.json()['id'] is not None
 
     # @pytest.mark.parametrize(
