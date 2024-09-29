@@ -11,4 +11,4 @@ class ApiService:
 
     @staticmethod
     def login_courier(payload):
-        requests.post(url=Urls.COURIER_LOGIN_URL, data=payload)
+        return requests.post(url=Urls.COURIER_LOGIN_URL, data=payload)

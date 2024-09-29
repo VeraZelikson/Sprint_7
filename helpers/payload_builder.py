@@ -12,3 +12,12 @@ class PayloadBuilder:
         if with_first_name:
             payload["firstName"] = Faker.generate_random_string(10)
         return payload
+
+    @staticmethod
+    def make_login_payload(login, password):
+        payload = {}
+        if login is not None:
+            payload["login"] = login
+        if password is not None:
+            payload["password"] = password
+        return payload

@@ -16,15 +16,33 @@ class TestLoginCourier:
         response = ApiService.login_courier(payload)
         assert response.status_code == 200 and response.json()['id'] is not None
 
-    # @pytest.mark.parametrize(
-    #     'payload',
-    #     [
-    #         PayloadBuilder.make_courier_create_payload(with_login=False),
-    #         PayloadBuilder.make_courier_create_payload(with_password=False),
-    #         PayloadBuilder.make_courier_create_payload(with_login=False, with_password=False)
-    #     ]
-    # )
-    # @allure.title('Создание курьера с отсутствием хотя бы одного из обязательных полей')
-    # def test_create_courier_successfully(self, payload):
-    #     response = requests.post(url=Urls.COURIER_CREATING_URL, data=payload)
-    #     assert response.status_code == 400 and response.json() == ExpectedResponses.BAD_DATA_RESPONSE
+    @allure.title('Логин несуществующего курьера')
+    def test_login_not_existed_courier(self):
+        payload = PayloadBuilder.make_courier_create_payload()
+        response = ApiService.login_courier(payload)
+        assert response.status_code == 404 and response.json() == ExpectedResponses.LOGIN_NOT_EXISTED_RESPONSE
+
+    @allure.title('Логин курьера с неверным паролем')
+    def test_login_courier_wrong_password(self):
+        payload = PayloadBuilder.make_courier_create_payload()
+        response = ApiService.create_courier(payload)
+        assert response.status_code == 201
+        payload['password'] = 'wrong'
+        response = ApiService.login_courier(payload)
+        assert response.status_code == 404 and response.json() == ExpectedResponses.LOGIN_NOT_EXISTED_RESPONSE
+
+
+    @pytest.mark.parametrize(
+        'empty_field',
+        [
+            'login',
+            'password'
+        ]
+    )
+    @allure.title('Логин курьера без обязательного поля')
+    def test_login_courier_without_required_field(self, empty_field):
+        payload = PayloadBuilder.make_courier_create_payload()
+        ApiService.create_courier(payload)
+        payload[empty_field] = ''
+        response = ApiService.login_courier(payload)
+        assert response.status_code == 400 and response.json() == ExpectedResponses.LOGIN_NOT_ENOUGH_DATA_RESPONSE
